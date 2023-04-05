@@ -1,17 +1,15 @@
 // Reminder: Supply a valid API key or the API requests will not work!
+// This is where you set the api key
+const apiKey = "";
 
-async function getMeal() {
+async function getMeal(query, numberOfResults) {
     const customHeader = new Headers();
-    // This is where you set the api key
-    const apiKey = "8d5bc60034c841b49d1476a3e39b9c6f";
+    
     customHeader.append("x-api-key", apiKey);
 
     const mealIDs = [];
-    let query = "burger";
-    let dish_type = "snack";
-    let number = "3";
     const url = "https://api.spoonacular.com/recipes/complexSearch?" + "query="
-                 + query + "&type=" + dish_type + "&number=" + number;
+                 + query + "&number=" + numberOfResults;
 
     const response = await fetch(url, {
         headers: customHeader
@@ -28,8 +26,6 @@ async function getMeal() {
 
 function getMealInfos(mealIDs) {
     const customHeader = new Headers();
-    // This is where you set the api key
-    const apiKey = "8d5bc60034c841b49d1476a3e39b9c6f";
     customHeader.append("x-api-key", apiKey);
 
     let url = "";
@@ -54,6 +50,11 @@ function getMealInfos(mealIDs) {
     return mealInfos;
 }
 
-/* getMeal().then((mealIDs) => {
-    console.log(mealIDs);
-}); */
+function getMealInfoURLs(mealInfos) {
+    
+}
+
+getMeal("ice cream", "3").then((mealIDs) => {
+    const mealInfosList = getMealInfos(mealIDs);
+    console.log(mealInfosList);
+});
