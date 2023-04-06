@@ -2,6 +2,7 @@
 // This is where you set the api key
 const apiKey = "";
 
+// Returns an array of at most mealIDs. Each mealID corresponds to a specific meal
 async function getMeal(query, numberOfResults) {
     const customHeader = new Headers();
     
@@ -24,6 +25,8 @@ async function getMeal(query, numberOfResults) {
     return mealIDs;
 }
 
+// Returns an array of mealInfo objects from a meal search. Each mealInfo object contains specific
+// information about each meal
 function getMealInfos(mealIDs) {
     const customHeader = new Headers();
     customHeader.append("x-api-key", apiKey);
@@ -50,8 +53,24 @@ function getMealInfos(mealIDs) {
     return mealInfos;
 }
 
-function getMealInfoURLs(mealInfos) {
+function getMealOriginalSource(mealInfos) {
+    const mealOriginalSources = [];
     
+
+    for (const mealInfo of mealInfos) {
+        let mealOriginalSourceMap = new Map();
+        if (mealInfo.sourceName) {
+            mealOriginalSourceMap.set("sourceName", mealInfo.sourceName);
+        }
+
+        if (mealInfo.sourceUrl) {
+            mealOriginalSourceMap.set("sourceURL", mealInfo.sourceUrl);
+        }
+
+        mealOriginalSources.push(mealOriginalSourceMap);
+    }
+
+    return mealOriginalSources;
 }
 
 getMeal("ice cream", "3").then((mealIDs) => {
