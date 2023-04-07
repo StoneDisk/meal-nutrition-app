@@ -49,7 +49,7 @@ async function getMealInfos(mealIDs) {
             mealInfos.push(mealInfo);
     }
     
-        console.log("Here are all the meal infos " + mealInfos); // Test Fail
+        console.log("Here are all the meal infos " + mealInfos); // Test Ok
         return mealInfos;
 }
 
@@ -75,7 +75,7 @@ function getMealOriginalSource(mealInfos) {
 
 getMeal("fried chicken", "3").then((mealIDs) => {
      getMealInfos(mealIDs).then((mealInfosList) => {
-        console.log(mealInfosList); // Test Fail
+        console.log(mealInfosList); // Test Ok
     
         console.log(mealInfosList[0].title);
         console.log(mealInfosList[0].sourceName);
