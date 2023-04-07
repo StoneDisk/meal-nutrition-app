@@ -28,7 +28,7 @@ async function getMeal(query, numberOfResults) {
 
 // Returns an array of mealInfo objects from a meal search. Each mealInfo object contains specific
 // information about each meal
-function getMealInfos(mealIDs) {
+async function getMealInfos(mealIDs) {
     const customHeader = new Headers();
     customHeader.append("x-api-key", apiKey);
 
@@ -39,17 +39,14 @@ function getMealInfos(mealIDs) {
 
     console.log("Here are the IDs: " + mealIDs); // Test Ok
     for (const mealID of mealIDs) {
-        console.log("ID is now: " + mealID);
+        console.log("ID is now: " + mealID); // Test ok
         url = `https://api.spoonacular.com/recipes/${mealID}/information?includeNutrition=false`;
-        // This setTimeout is needed to avoid exceeding the request rate limit of spoonacular API
-        // by delaying the next request to 3 seconds
-        setTimeout(async() => {
+        
             response = await fetch(url, {
                 headers: customHeader
             });
             mealInfo = await response.json(); 
             mealInfos.push(mealInfo);
-        }, 3000);
     }
     
         console.log("Here are all the meal infos " + mealInfos); // Test Fail
@@ -76,10 +73,10 @@ function getMealOriginalSource(mealInfos) {
     return mealOriginalSources;
 }
 
-getMeal("ice cream", "3").then((mealIDs) => {
-    const mealInfosList = getMealInfos(mealIDs);
-    console.log(mealInfosList); // Test Fail
-    setTimeout(() => {
+getMeal("fried chicken", "3").then((mealIDs) => {
+     getMealInfos(mealIDs).then((mealInfosList) => {
+        console.log(mealInfosList); // Test Fail
+    
         console.log(mealInfosList[0].title);
         console.log(mealInfosList[0].sourceName);
         console.log(mealInfosList[0].sourceUrl);
@@ -91,7 +88,8 @@ getMeal("ice cream", "3").then((mealIDs) => {
         console.log(mealInfosList[2].title);
         console.log(mealInfosList[2].sourceName);
         console.log(mealInfosList[2].sourceUrl);
-    }, 15000);
+    });
+        
     
     /* const mealOriginalSourcesMapArray = getMealOriginalSource(mealInfosList);
     console.log(mealOriginalSourcesMapArray);
