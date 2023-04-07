@@ -1,6 +1,6 @@
 // Reminder: Supply a valid API key or the API requests will not work!
 // This is where you set the api key
-const apiKey = "8d5bc60034c841b49d1476a3e39b9c6f";
+const apiKey = "";
 
 // Returns an array of at most mealIDs. Each mealID corresponds to a specific meal
 async function getMeal(query, numberOfResults) {
@@ -22,7 +22,6 @@ async function getMeal(query, numberOfResults) {
     });
 
     console.log(meals); // Remove this line when getMeal has been fully tested, Test Ok
-    console.log(mealIDs); // Test Ok
     return mealIDs;
 }
 
@@ -37,9 +36,7 @@ async function getMealInfos(mealIDs) {
     const mealInfos = [];
     let mealInfo = "";
 
-    console.log("Here are the IDs: " + mealIDs); // Test Ok
     for (const mealID of mealIDs) {
-        console.log("ID is now: " + mealID); // Test ok
         url = `https://api.spoonacular.com/recipes/${mealID}/information?includeNutrition=false`;
         
             response = await fetch(url, {
@@ -49,7 +46,6 @@ async function getMealInfos(mealIDs) {
             mealInfos.push(mealInfo);
     }
     
-        console.log("Here are all the meal infos " + mealInfos); // Test Ok
         return mealInfos;
 }
 
@@ -59,6 +55,11 @@ function getMealOriginalSource(mealInfos) {
 
     for (const mealInfo of mealInfos) {
         let mealOriginalSourceMap = new Map();
+
+        if (mealInfo.title) {
+            mealOriginalSourceMap.set("title", mealInfo.title);
+        }
+
         if (mealInfo.sourceName) {
             mealOriginalSourceMap.set("sourceName", mealInfo.sourceName);
         }
@@ -73,28 +74,9 @@ function getMealOriginalSource(mealInfos) {
     return mealOriginalSources;
 }
 
-getMeal("fried chicken", "3").then((mealIDs) => {
+getMeal("meat pie", "3").then((mealIDs) => {
      getMealInfos(mealIDs).then((mealInfosList) => {
-        console.log(mealInfosList); // Test Ok
-    
-        console.log(mealInfosList[0].title);
-        console.log(mealInfosList[0].sourceName);
-        console.log(mealInfosList[0].sourceUrl);
-
-        console.log(mealInfosList[1].title);
-        console.log(mealInfosList[1].sourceName);
-        console.log(mealInfosList[1].sourceUrl);
-
-        console.log(mealInfosList[2].title);
-        console.log(mealInfosList[2].sourceName);
-        console.log(mealInfosList[2].sourceUrl);
+        const mealOriginalSourcesMapArray = getMealOriginalSource(mealInfosList);
+        console.log(mealOriginalSourcesMapArray); // Test Ok
     });
-        
-    
-    /* const mealOriginalSourcesMapArray = getMealOriginalSource(mealInfosList);
-    console.log(mealOriginalSourcesMapArray);
-    
-    mealOriginalSourcesMapArray.forEach((mealOriginalSourceMap) => {
-        console.log(mealOriginalSourceMap);
-    }); */
 });
