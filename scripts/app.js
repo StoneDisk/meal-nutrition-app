@@ -1,6 +1,6 @@
 // Reminder: Supply a valid API key or the API requests will not work!
 // This is where you set the api key
-const apiKey = "";
+const apiKey = "8d5bc60034c841b49d1476a3e39b9c6f";
 
 // Returns an array of at most mealIDs. Each mealID corresponds to a specific meal
 async function getMeal(query, numberOfResults) {
@@ -21,7 +21,8 @@ async function getMeal(query, numberOfResults) {
         mealIDs.push(result.id);
     });
 
-    console.log(meals); // Remove this line when getMeal has been fully tested
+    console.log(meals); // Remove this line when getMeal has been fully tested, Test Ok
+    console.log(mealIDs); // Test Ok
     return mealIDs;
 }
 
@@ -36,8 +37,9 @@ function getMealInfos(mealIDs) {
     const mealInfos = [];
     let mealInfo = "";
 
-
+    console.log("Here are the IDs: " + mealIDs); // Test Ok
     for (const mealID of mealIDs) {
+        console.log("ID is now: " + mealID);
         url = `https://api.spoonacular.com/recipes/${mealID}/information?includeNutrition=false`;
         // This setTimeout is needed to avoid exceeding the request rate limit of spoonacular API
         // by delaying the next request to 3 seconds
@@ -49,8 +51,9 @@ function getMealInfos(mealIDs) {
             mealInfos.push(mealInfo);
         }, 3000);
     }
-
-    return mealInfos;
+    
+        console.log("Here are all the meal infos " + mealInfos); // Test Fail
+        return mealInfos;
 }
 
 function getMealOriginalSource(mealInfos) {
@@ -75,5 +78,25 @@ function getMealOriginalSource(mealInfos) {
 
 getMeal("ice cream", "3").then((mealIDs) => {
     const mealInfosList = getMealInfos(mealIDs);
-    console.log(mealInfosList);
+    console.log(mealInfosList); // Test Fail
+    setTimeout(() => {
+        console.log(mealInfosList[0].title);
+        console.log(mealInfosList[0].sourceName);
+        console.log(mealInfosList[0].sourceUrl);
+
+        console.log(mealInfosList[1].title);
+        console.log(mealInfosList[1].sourceName);
+        console.log(mealInfosList[1].sourceUrl);
+
+        console.log(mealInfosList[2].title);
+        console.log(mealInfosList[2].sourceName);
+        console.log(mealInfosList[2].sourceUrl);
+    }, 15000);
+    
+    /* const mealOriginalSourcesMapArray = getMealOriginalSource(mealInfosList);
+    console.log(mealOriginalSourcesMapArray);
+    
+    mealOriginalSourcesMapArray.forEach((mealOriginalSourceMap) => {
+        console.log(mealOriginalSourceMap);
+    }); */
 });
