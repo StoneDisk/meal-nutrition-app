@@ -49,6 +49,23 @@ async function getMealInfos(mealIDs) {
         return mealInfos;
 }
 
+async function getMealNutritionInfo(mealID) {
+    const customHeader = new Headers();
+    customHeader.append("x-api-key", apiKey);
+
+    const url = `https://api.spoonacular.com/recipes/${mealID}/nutritionWidget.json`;
+
+    const response = await fetch(url, {
+        headers: customHeader
+    });
+
+    const mealNutritionalInfo = await response.json();
+
+    console.log(mealNutritionalInfo); // Test, Ok
+
+    return mealNutritionalInfo;
+}
+
 function getMealOriginalSource(mealInfos) {
     const mealOriginalSources = [];
     
@@ -74,9 +91,16 @@ function getMealOriginalSource(mealInfos) {
     return mealOriginalSources;
 }
 
-getMeal("meat pie", "3").then((mealIDs) => {
+/* getMeal("meat pie", "3").then((mealIDs) => {
      getMealInfos(mealIDs).then((mealInfosList) => {
         const mealOriginalSourcesMapArray = getMealOriginalSource(mealInfosList);
         console.log(mealOriginalSourcesMapArray); // Test Ok
     });
-});
+}); */
+
+/* getMeal("roasted chicken", "3")
+    .then((mealIDs) => {
+        mealIDs.forEach((mealID) => {
+            getMealNutritionInfo(mealID);
+        }); 
+    }); */
